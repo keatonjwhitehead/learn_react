@@ -1,0 +1,169 @@
+////////////////////////////////////
+// Section 5
+////////////////////////////////////
+React has a special concept when it comes to lists. React has a special process to run the list effeciently without bugs or delays.
+The standard way the code currently works is it will add a div, then step through each item in the list and update all of the json data.
+This is bad because it has bad performance, and it can even leave to bugs. 
+We solve this by adding a key prop. it is not for us to use, but for react to use to help know which div to change specifically.
+
+
+
+////////////////////////////////////
+// Section 4
+////////////////////////////////////
+In react we have access to all of React's native DOM events that we can listen to
+Search in google: html button element
+Find an article that shows you the DOM interface. This will show you all of the events that we can listen to in regards to a button
+
+So instead of listening to an event the imperative way of:
+ document.getElementById('root').addEventListener()
+
+ We are able to do this:
+ Go to the element and add a prop to the tag and pass a function:
+ <button onClick={() => {console.log('Clicked')} > Change title </button>
+
+ Although you don't want to put too much code into your JSX, and keep it very lean
+ Instead create a const like this:
+
+ and reference that function by pointing to it in the onClick property:
+ <button onClick={clickHandler}>Change Title</button>
+
+ The reason we point to the function rather than call the fucntion is because if we called the function, the function would run 
+ every time the JSX code gets rendered which would be right away. Instead we want to point to the function so that React knows what 
+ function to call when the onCLick proptery is relevant. 
+
+ /////////////
+ State
+
+ In order to update the DOM in our react code we have to import the {useState} function from the react file. This allows us to update 
+ the DOM in real time.
+
+ The useState(props) function gives us acess to the special variable inside of the props. It also returns a function that we can use to 
+ reasign the value. This returns an array where the first variable is the variable itself, and the second variable is the function to reasign
+ the variable. We can deconstruct this array by doing the following:
+ const [title, setTitle] = useState(props.title);
+
+The beauty of these states is that they are self contained to the component that they are in. If you update one component it will not update all
+of them. So when we duplicate the components every single one that is made has its own state that it operates in. So only one component is being updated
+when we use useState. 
+
+We can use state to store input data in forms even when the component is updated!
+
+If we are keeping track of multiple states, instead of having a list of them like so:
+    const [enteredTitle, setEnteredTitle] = useState('');
+        const [enteredAmount, setEnteredAmount] = useState('');
+        const [enteredDate, setEnteredDate] = useState('');
+
+        const titleChangeHandler = (event) => {
+            setEnteredTitle(event.target.value);
+            console.log(event.target.value);
+        };
+        const amountChangeHandler = (event) => {
+            setEnteredAmount(event.target.value);
+            console.log(event.target.value);
+        };
+        const dateChangeHandler = (event) => {
+            setEnteredDate(event.target.value);
+            console.log(event.target.value);
+        };
+We can instead pass it an object, rather than running it three times to pass a retrieved string. Here is what it looks like:
+    const [userInput, setUserInput] = useState({
+        enteredTitle: '',
+        enteredAmount: '',
+        enteredDate: '',
+    });
+
+    const titleChangeHandler = (event) => {
+        setUserInput({
+            ...userInput, // This copies the previous state of information the other object data is not overwritten
+            enteredTitle: event.target.value // this overrides just the previous element that was changed from the new retrieved input
+        })
+    };
+    const amountChangeHandler = (event) => {
+        setUserInput({
+            ...userInput,
+            enteredAmount: event.target.value
+        })
+    };
+    const dateChangeHandler = (event) => {
+        setUserInput({
+            ...userInput,
+            enteredDate: event.target.value
+        })
+    };
+
+This approach works only if the deployment of the state fucnctions does not need to entirely depend on the order of execution.
+If you have something like a counter it would be better to gaurentee that the status will be ran immedietly and not scheduled. 
+Here is what this new code would look like:
+
+setUserInput((prevState) => {
+    return {...prevState,enteredTitle: event.target.value};
+});
+
+/////////////////
+Two way binding
+
+Example: It is when you have a state and you collect information from a form submission and now you want to inject new data now that
+the form has been submitted. 
+We do this by adding the "value={enteredValue}" to the input tag so that it is saved upon the submission.
+
+
+/////////////////
+Child-to-parent component communication
+
+We can think about input tag as a component as well that is given to us by React. The onChange prop is not that special. React sees that we added the onChange 
+function and then it adds the function to the element in which we are watching. This is a pattern we can replicate for our own components as well.  We can create our
+own event props. We can expect funtions as values, This allows us to pass a function from a parent component to a child component, and then call that function inside of the
+child component. Then when we call that function we can then pass data from the function as a parameter. That is how we can communicate upward from child to parent.
+
+
+//////////////////
+Lifting the state up
+In order to lift the state up from one child to another child, you have to pass it up through a parent that shares both children.
+
+
+//////////////////
+Assignment # 2
+
+Goal: insert a drop down menu that filters the expenses by the year that you have selected
+Steps: 
+1 - Listen to the drop down selection
+2 - Pass that value to the DisplayExpense file
+3 - Store that value in a state
+
+Done! 
+
+Controlled Component -> Everything is self contained, there is no logic, the value and changes to the value are not handled in this component, just plain display 
+Uncontrolled Component -> Everything is not contained, there is logic involved, the value and changes to the value do happen, and does more than just display
+Stateless -> There is no need to create or call on a state in this component
+Stateful -> There is a state that is used in this component 
+
+
+Quiz Test Notes - Section 4
+
+Calling useState again will not update the state value.
+
+You should NEVER assign a new value to your state variable, const. If you do it, that change will not be picked up by React and your component won't update.
+-> useState returns an array with exactly two elements - the second element is always a function which you can call to set a new value for your state. Calling that function 
+will then also trigger React to reevaluate the component. 
+You can have as many state slices as you need / want.
+You can update the state that depends on the previous state, you should use the "function form" of the state updating function instead.
+
+
+/////////////////////////////////////
+// Quiz Test notes - Section 1-3
+With React, you build a component tree with one root component that's mounted into a DOM node.
+
+Q: What does "component tree" mean?
+A: It means that you have a root node which then has more componenets nested beneath it.
+
+Q: How do you pass data between componenets?
+A: Via "custom HTML attributes" (Better known as "props")
+
+Q: How can you output dynamic data in React components (i.e. in the returned JSX code)?
+A: You can use single curly braces (opening & closing) with any JS expression between them.
+
+Q: Which kind of code do you write when using React.js?
+A: Declarative JavaScript Code
+
+
