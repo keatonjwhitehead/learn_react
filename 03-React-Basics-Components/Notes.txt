@@ -1,4 +1,20 @@
 ////////////////////////////////////
+// Section 7 - Debugging React Apps
+////////////////////////////////////
+Understanding Error Messages
+
+Debugging & Analyzing React Apps 
+    Step through the code to find the Error
+        Usually a mispelling, undefined function or missing ;
+    Working with break points
+        Open the sources tab with the browser developer tools
+        
+
+Using the React DevTools
+
+
+
+////////////////////////////////////
 // Section 5
 ////////////////////////////////////
 React has a special concept when it comes to lists. React has a special process to run the list effeciently without bugs or delays.
